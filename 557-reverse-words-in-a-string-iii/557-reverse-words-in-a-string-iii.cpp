@@ -1,17 +1,17 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        string curr="", res="";
-        for(int i=0;i<s.size();i++) {
+        int l=0,r=1;
+        for(int i=1;i<s.size();i++) {
             if(s[i]==' ') {
-                reverse(curr.begin(), curr.end());
-                res+=curr+" ";
-                curr="";
+                reverse(s.begin()+l, s.begin()+r);
+                l=r+1;
+                r=l;
             } else {
-                curr+=s[i];
+                r++;
             }
         }
-        reverse(curr.begin(), curr.end());
-        return res+curr;
+        reverse(s.begin()+l, s.begin()+r);
+        return s;
     }
 };
