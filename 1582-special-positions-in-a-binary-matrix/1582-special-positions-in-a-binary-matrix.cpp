@@ -1,11 +1,5 @@
 class Solution {
 public:
-    int value(vector<int> v) {
-        int sum=0;
-        for(int i=0;i<v.size();i++) sum+=v[i];
-        return sum;
-    }
-    
     int numSpecial(vector<vector<int>>& mat) {
         vector<int> rowSum(mat.size());
         vector<int> colSum(mat[0].size());
