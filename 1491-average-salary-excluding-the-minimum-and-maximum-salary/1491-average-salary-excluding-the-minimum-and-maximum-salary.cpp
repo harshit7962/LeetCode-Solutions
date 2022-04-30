@@ -1,13 +1,13 @@
 class Solution {
 public:
     double average(vector<int>& salary) {
-        int mx = INT_MIN, mn = INT_MAX, sum=0;
+        double mx = INT_MIN, mn = INT_MAX, sum=0;
         for(int i=0;i<salary.size();i++) {
-            mx = max(mx, salary[i]);
-            mn = min(mn, salary[i]);
+            if(mx<salary[i]) mx = salary[i];
+            if(mn>salary[i]) mn = salary[i];
+            
             sum+=salary[i];
         }
-        
-        return (double)(sum-mx-mn)/(double)(salary.size()-2);
+        return (sum-mx-mn)/(salary.size()-2);
     }
 };
