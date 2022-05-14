@@ -17,6 +17,7 @@ public:
                 left++;
             }
         }
+        
         return res;
     }
 };
