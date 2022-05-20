@@ -1,2 +1,1 @@
-Have to learn the process of converting excessive sum value over integer data type...
-Here they have subtracted the long long target value with the long long sum of each and later converted the same to int.
+​
