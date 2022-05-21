@@ -1,27 +1,19 @@
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        map<string, int> mp;
-        vector<vector<string>> res;
+        map<string, vector<string>> mp;
         
-        string curr = strs[0];
-        sort(curr.begin(), curr.end());
-        mp.insert({curr, 0});
-        res.push_back({strs[0]});
-        
-        int ind=0;
-        for(int i=1;i<strs.size();i++) {
-            string curr=strs[i];
+        for(auto s:strs) {
+            string curr = s;
             sort(curr.begin(), curr.end());
-            if(mp.find(curr)==mp.end()) {
-                mp[curr] = ++ind;
-                res.push_back({strs[i]});
-            }
-            else {
-                res[mp[curr]].push_back(strs[i]);
-            }
-            
+            mp[curr].push_back(s);
         }
+        
+        vector<vector<string>> res;
+        for(auto pointer:mp) {
+            res.push_back(pointer.second);
+        }
+        
         return res;
     }
 };
