@@ -5,16 +5,15 @@ public:
         int n = stk.size();
         if(n==1)
             return 0;
-        int cnt = 1;
-        for(int i=2;i<n;i++){
-            long x1 = stk[i][0],x2 = stk[i-1][0],x3 = stk[i-2][0];
-            long y1 = stk[i][1],y2 = stk[i-1][1],y3 = stk[i-2][1];
-            long diff1 = (y3-y2) * (x2-x1);
-            long diff2 = (y2-y1) * (x3-x2);
-            if(diff1 != diff2)
-                cnt++;
+        int lines=1;
+        long double currSlope = (long double)(stk[1][1]-stk[0][1])/(long double)(stk[1][0]-stk[0][0]);
+        for(int i=2;i<n;i++) {
+            long double newSlope = (long double)(stk[i][1]-stk[i-1][1])/(long double)(stk[i][0]-stk[i-1][0]);
+            if(newSlope!=currSlope) {
+                lines++;
+                currSlope=newSlope;
+            }
         }
-        
-        return cnt;
+        return lines;
     }
 };
