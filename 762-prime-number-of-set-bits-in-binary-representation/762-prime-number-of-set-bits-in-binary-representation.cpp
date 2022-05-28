@@ -24,7 +24,6 @@ public:
         for(int i=left;i<=right;i++) {
             if(isPrime(kSet(i))) count++;
         }
-        cout << endl;
         return count;
     }
 };
