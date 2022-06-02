@@ -1,26 +1,35 @@
 class MyStack {
+private: 
+    queue<int> q1, q2;
 public:
-    vector<int> arr;
     MyStack() {
         
     }
     
     void push(int x) {
-        arr.push_back(x);
+        while(!q1.empty()) {
+            q2.push(q1.front());
+            q1.pop();
+        }
+        q1.push(x);
+        while(!q2.empty()) {
+            q1.push(q2.front());
+            q2.pop();
+        }
     }
     
     int pop() {
-        int x = arr[arr.size()-1];
-        arr.pop_back();
-        return x;        
+        int val = q1.front();
+        q1.pop();
+        return val;
     }
     
     int top() {
-        return arr[arr.size()-1];
+        return q1.front();
     }
     
     bool empty() {
-        return arr.size()==0;
+        return q1.empty();
     }
 };
 
