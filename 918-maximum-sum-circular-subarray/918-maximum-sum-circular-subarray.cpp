@@ -1,28 +1,29 @@
 class Solution {
 public:
-    int kadanes(vector<int> nums) {
-        int sum=nums[0], maxsum=nums[0];
+    int maxSubarraySumCircular(vector<int>& nums) {
+        
+        int normalmax=nums[0], sum=nums[0], total=nums[0];
+        
+        nums[0]=-nums[0];
         for(int i=1;i<nums.size();i++) {
             if(sum<0) sum=0;
             sum+=nums[i];
-            maxsum = max(maxsum, sum);
-        }
-        
-        return maxsum;
-    }
-    
-    int maxSubarraySumCircular(vector<int>& nums) {
-        int normalmax = kadanes(nums);
-        cout << normalmax << " ";
-        if(normalmax<=0) return normalmax;
-        
-        int sum=0;
-        for(int i=0;i<nums.size();i++)  {
-            sum+=nums[i];
+            normalmax = max(normalmax, sum);
+            total+=nums[i];
             nums[i] = -nums[i];
         }
         
-        int circularmax = sum+kadanes(nums);
+        if(normalmax<=0) return normalmax;
+        
+        int circularmax=nums[0];
+        sum=nums[0];
+        
+        for(int i=1;i<nums.size();i++) {
+            if(sum<0) sum=0;
+            sum+=nums[i];
+            circularmax=max(circularmax, sum);
+        }
+        circularmax=total+circularmax;
         
         return max(circularmax, normalmax);
     }
