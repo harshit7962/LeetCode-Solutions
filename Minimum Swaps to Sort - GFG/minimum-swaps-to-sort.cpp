@@ -13,15 +13,18 @@ class Solution
 	{
 	    vector<pair<int, int>> v;
 	    for(int i=0;i<nums.size();i++) v.push_back({nums[i], i});
+	    
 	    sort(v.begin(), v.end());
-	    int swaps=0;
+	    
+	    int count=0;
 	    for(int i=0;i<nums.size();i++) {
-	        while(v[i].second!=i) {
-	            swaps++;
+	        while(v[i].second!=i){
 	            swap(v[i], v[v[i].second]);
+	            count++;
 	        }
 	    }
-	    return swaps;
+	    
+	    return count;
 	}
 };
 
