@@ -9,26 +9,22 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode *a=headA, *b=headB;
         int count1=0, count2=0;
-        for(ListNode *curr=headA;curr!=NULL; curr=curr->next) count1++;
-        for(ListNode *curr=headB;curr!=NULL; curr=curr->next) count2++;
+        for(ListNode *curr=headA;curr!=NULL;curr=curr->next) count1++;
+        for(ListNode *curr=headB;curr!=NULL;curr=curr->next) count2++;
         
         while(count1>count2) {
+            headA = headA->next;
             count1--;
-            a=a->next;
         }
         
         while(count2>count1) {
+            headB = headB->next;
             count2--;
-            b=b->next;
         }
         
-        while(a!=b) {
-            a=a->next;
-            b=b->next;
-        }
+        while(headA!=headB) {headA=headA->next; headB=headB->next;}
         
-        return a;
+        return headA;
     }
 };
