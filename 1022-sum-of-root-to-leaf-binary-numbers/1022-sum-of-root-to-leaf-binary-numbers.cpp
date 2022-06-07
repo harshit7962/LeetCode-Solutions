@@ -13,30 +13,19 @@ class Solution {
 public:
     int res=0;
     
-    int binaryToInt(string curr) {
-        int r=0;
-        for(char c:curr) {
-            if(c=='1') r=r*2+1;
-            else r=r*2;
-        }
-        
-        return r;
-    }
-    
-    int sumRootToLeaf(TreeNode* root, string curr="") {
-        if(root->val==0) curr+='0';
-        else curr+='1';
+    int sumRootToLeaf(TreeNode* root, int sum=0) {
+        if(root->val==0) sum=sum*2;
+        else sum=sum*2+1;
         
         if(root->left==NULL && root->right==NULL) {
-            res+=binaryToInt(curr);
+            res+=sum;
         } else if(root->left==NULL){
-            
-            sumRootToLeaf(root->right, curr);
+            sumRootToLeaf(root->right, sum);
         } else if(root->right==NULL) {
-            sumRootToLeaf(root->left, curr);
+            sumRootToLeaf(root->left, sum);
         } else {
-            sumRootToLeaf(root->right, curr);
-            sumRootToLeaf(root->left, curr);
+            sumRootToLeaf(root->right, sum);
+            sumRootToLeaf(root->left, sum);
         }
         
         return res;
