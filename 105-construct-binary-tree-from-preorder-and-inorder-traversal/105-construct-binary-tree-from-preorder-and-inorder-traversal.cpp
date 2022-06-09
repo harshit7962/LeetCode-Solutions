@@ -12,14 +12,17 @@
 class Solution {
 private:
     int preIndex=0;
-    map<int, int> mp;
+    
 public:
     TreeNode *cTree(vector<int> preorder, vector<int> inorder, int is, int ie) {
         if(is>ie) return NULL;
         
         TreeNode *root = new TreeNode(preorder[preIndex++]);
         
-        int ind = mp[root->val];
+        int ind;
+        for(int i=is;i<=ie;i++) {
+            if(inorder[i]==root->val) {ind=i;break;}
+        }
         
         root->left = cTree(preorder, inorder, is, ind-1);
         root->right = cTree(preorder, inorder, ind+1, ie);
@@ -28,8 +31,6 @@ public:
     }
     
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        for(int i=0;i<inorder.size();i++) mp[inorder[i]] = i;
-        
         return cTree(preorder, inorder, 0, inorder.size()-1);
     }
 };
