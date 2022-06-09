@@ -5,8 +5,8 @@ public:
         
         while(low<=high) {
             long long res = low*low + high*high;
-            if(res == c) return true;
-            if(res>c) high--;
+            if(res==c) return true;
+            else if(res>c) high--;
             else low++;
         }
         
