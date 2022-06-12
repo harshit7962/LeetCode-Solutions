@@ -20,6 +20,5 @@ public:
         }
         
         return hasPathSum(root->left, targetSum, currsum) || hasPathSum(root->right, targetSum, currsum);
-        
     }
 };
