@@ -10,8 +10,6 @@
  * };
  */
 class Solution {
-private:
-    int prev = INT_MIN;
 public:    
     bool isValidBST(TreeNode* root, long left=(long)INT_MIN-1, long right=(long)INT_MAX+1) {
         if(root==NULL) return true;
