@@ -98,26 +98,27 @@ int main()
 
 
 
-bool isAncestor(Node *root, int a) {
+bool findPath(Node *root, vector<Node *> &p, int a) {
     if(root==NULL) return false;
+    p.push_back(root);
     if(root->data==a) return true;
     
-    return (isAncestor(root->left, a) || isAncestor(root->right, a));
+    if(findPath(root->left, p, a) || findPath(root->right, p, a)) {return true;}
+    p.pop_back();
+    return false;
 }
 //Function to find the lowest common ancestor in a BST. 
 Node* LCA(Node *root, int a, int b)
 {
-   if(root==NULL) return NULL;
-    
-    Node *curr1, *curr2;
-    if(isAncestor(root, a) && isAncestor(root, b)) {
-        curr1 = LCA(root->left, a, b);
-        curr2 = LCA(root->right, a, b);
-    } else return NULL;
-    
-    if(curr1==NULL && curr2==NULL) return root;
-    if(curr1==NULL) return curr2;
-    return curr1;
+   vector<Node *> p, q;
+   bool flag1=findPath(root, p, a), flag2=findPath(root, q, b);
+   
+   int i;
+   for(i=1;i<min(p.size(),q.size());i++) {
+       if(p[i]->data!=q[i]->data) return p[i-1];
+   }
+   
+   return p[i-1];
 }
 
 
