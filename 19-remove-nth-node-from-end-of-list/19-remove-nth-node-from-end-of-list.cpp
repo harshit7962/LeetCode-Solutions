@@ -11,21 +11,17 @@
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode *curr1=head, *curr2=head;
-        for(int i=1;i<=n;i++) curr1=curr1->next;
+        ListNode *curr = head, *prev = head;
+        //Move to the nth node from begining
+        for(int i=0;i<n;i++) curr = curr->next;
         
-        if(curr1==NULL) {
-            head = head->next;
-            return head;
-        }
+        //If curr is null, it implies we need to delete the head node
+        if(curr==NULL) return head->next;
         
-        while(curr1->next!=NULL) {
-            curr1=curr1->next;
-            curr2=curr2->next;
-        }
+        //Move from beginning using another pointer and stop when initial pointer reaches null
+        while(curr->next!=NULL) {curr=curr->next; prev=prev->next;}
         
-        curr2->next = curr2->next->next;
-        
-        return head;
+        prev->next = prev->next->next;
+        return  head;
     }
 };
