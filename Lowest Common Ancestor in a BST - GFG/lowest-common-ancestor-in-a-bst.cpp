@@ -96,29 +96,17 @@ int main()
     return 1;
 }// } Driver Code Ends
 
-
-
-bool findPath(Node *root, vector<Node *> &p, int a) {
-    if(root==NULL) return false;
-    p.push_back(root);
-    if(root->data==a) return true;
-    
-    if(findPath(root->left, p, a) || findPath(root->right, p, a)) {return true;}
-    p.pop_back();
-    return false;
-}
 //Function to find the lowest common ancestor in a BST. 
 Node* LCA(Node *root, int a, int b)
 {
-   vector<Node *> p, q;
-   bool flag1=findPath(root, p, a), flag2=findPath(root, q, b);
+   if(root==NULL) return NULL;
+   if(root->data==a || root->data==b) return root;
+   Node *lca1 = LCA(root->left, a, b);
+   Node *lca2 = LCA(root->right, a, b);
    
-   int i;
-   for(i=1;i<min(p.size(),q.size());i++) {
-       if(p[i]->data!=q[i]->data) return p[i-1];
-   }
+   if(lca1!=NULL && lca2!=NULL) return root;
+   if(lca1!=NULL) return lca1;
+   if(lca2!=NULL) return lca2;
    
-   return p[i-1];
+    return NULL;
 }
-
-
