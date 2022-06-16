@@ -23,13 +23,9 @@ public:
         else if(root->val < key) root->right = deleteNode(root->right, key);
         else {
             if(root->left==NULL) {
-                TreeNode *temp = root->right;
-                delete root;
-                return temp;
+                return root->right;
             } else if(root->right==NULL) {
-                TreeNode *temp = root->left;
-                delete root;
-                return temp;
+                return root->left;
             } else {
                 TreeNode *temp = successor(root);
                 root->val = temp->val;
