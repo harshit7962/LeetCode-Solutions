@@ -5,23 +5,32 @@ using namespace std;
  // } Driver Code Ends
 class Solution {
   public:
-    bool checkForCycle(vector<int> adj[], vector<bool> &vis, int src, int parent) {
-    vis[src] = true;
-    for(int y:adj[src]) {
-        if(!vis[y]) {
-            if(checkForCycle(adj, vis, y, src)) return true;
-        } else if(y!=parent) return true;
+    bool checkCycle(vector<int> adj[], vector<bool> &vis, int src) {
+        queue<pair<int, int>> q;
+        q.push({src,-1});
+        vis[src]=true;
+        while(!q.empty()) {
+            int x = q.front().first;
+            int par = q.front().second;
+            q.pop();
+            for(int y:adj[x]) {
+                if(!vis[y]) {
+                    q.push({y,x});
+                    vis[y] = true;
+                } else if(y!=par) return true;
+            }
+        }
+    
+        return false;
     }
-    
-    return false;
-}
-    
   
     // Function to detect cycle in an undirected graph.
     bool isCycle(int v, vector<int> adj[]) {
         vector<bool> vis(v, false);
-        for(int i=0;i<v;i++){
-            if(!vis[i]) if(checkForCycle(adj, vis, i, -1)) return true;
+        for(int i=0;i<v;i++) {
+            if(!vis[i]) {
+                if(checkCycle(adj, vis, i)) return true;
+            }
         }
     
         return false;
