@@ -4,38 +4,27 @@ using namespace std;
 
  // } Driver Code Ends
 class Solution {
-private:
-    bool DFS(int src, int parent, vector<int> adj[], vector<bool> &visited) {
-        visited[src] = true;
-        
-        for(int &u : adj[src]) {
-            if(visited[u] == false) {
-                if(DFS(u, src, adj, visited))
-                    return true;
-            }
-            else if(u != parent)
-                return true;
+  public:
+    bool checkForCycle(int src, int par, vector<bool>  &vis, vector<int> adj[]) {
+        vis[src] = true;
+        for(int y:adj[src]) {
+             if(!vis[y]) {
+                 if(checkForCycle(y, src, vis, adj)) return true;
+             } else if(y!=par) return true;
         }
         
         return false;
     }
     
-    bool checkDFS(vector<int> adj[], int V) {
-        vector<bool> visited(V, false);
-        
-        for(int i = 0; i < V; ++i) {
-            if(visited[i] == false) {
-                if(DFS(i, -1, adj, visited))
-                    return true;
-            }
+  
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int v, vector<int> adj[]) {
+        vector<bool> vis(v, false);
+        for(int i=0;i<v;i++) {
+            if(!vis[i]) if(checkForCycle(i,-1,vis,adj)) return true;
         }
         
         return false;
-    }
-
-public:
-    bool isCycle(int V, vector<int> adj[]) {
-        return checkDFS(adj, V); 
     }
 };
 
