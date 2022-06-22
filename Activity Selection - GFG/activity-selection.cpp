@@ -11,17 +11,16 @@ class Solution
     //be performed by a single person.
     int activitySelection(vector<int> start, vector<int> end, int n)
     {
-        vector<pair<int, int>> activity(n);
+        vector<pair<int, int>> v(n);
+        for(int i=0;i<n;i++) v[i] = {end[i], start[i]};
         
-        for(int i=0;i<n;i++) {activity[i].second=start[i];activity[i].first=end[i];}
-        sort(activity.begin(), activity.end());
+        sort(v.begin(), v.end());
         
-        int res=1, prev_fin_day=activity[0].first;
-        
+        int res=1, prev_fin_time=v[0].first;
         for(int i=1;i<n;i++) {
-            if(activity[i].second>prev_fin_day) {
+            if(v[i].second>prev_fin_time) {
                 res++;
-                prev_fin_day=activity[i].first;
+                prev_fin_time= v[i].first;
             }
         }
         
