@@ -2,19 +2,16 @@ class Solution {
 public:
     int longestPalindrome(string s) {
         unordered_map<char, int> mp;
-        bool isone=false;
-        
         for(char c:s) mp[c]++;
         
-        int res=0;
-        for(auto x:mp){
-            if(x.second&1) {
-                isone=true;
-                res--;
-            } 
-            res+=x.second;
+        bool flag=false;
+        int total=0;
+        for(auto x:mp) {
+            total+=x.second;
+            if(x.second%2) {flag=true;total--;}
         }
-        if(isone) return res+1;
-        return res;
+        
+        if(flag) return total+1;
+        return total;
     }
 };
