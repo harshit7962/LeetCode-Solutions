@@ -24,9 +24,7 @@ public:
     void preOrder(Node* root) {
         if(root==NULL) return;
         res.push_back(root->val);
-        for(auto c:root->children) {
-            preOrder(c);
-        }
+        for(auto c:root->children) preOrder(c);
     }
     
     vector<int> preorder(Node* root) {
