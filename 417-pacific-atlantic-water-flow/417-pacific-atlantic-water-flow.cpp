@@ -1,38 +1,44 @@
 class Solution {
 public:
-    void dfs(vector<vector<int>> &heights, vector<vector<int>> &ocean, int i, int j) {
-        int m=heights.size(), n=heights[0].size();
-        if(i<0||j<0||i>=m||j>=n||ocean[i][j]==-1) return;
+    
+    void dfs(vector<vector<int>> &graph, vector<vector<bool>> &visited, int i, int j) {
+        if(i<0 || j<0 || i>=graph.size() || j>=graph[0].size() || visited[i][j]) return;
         
-        ocean[i][j]=-1;
+        visited[i][j]=true;
         
-        if(i!=0 && heights[i-1][j]>=heights[i][j]) dfs(heights, ocean, i-1, j);
-        if(j!=0 && heights[i][j-1]>=heights[i][j]) dfs(heights, ocean, i, j-1);
-        if(i!=m-1 && heights[i+1][j]>=heights[i][j]) dfs(heights, ocean, i+1, j);
-        if(j!=n-1 && heights[i][j+1]>=heights[i][j]) dfs(heights, ocean, i, j+1);
+        //Moving Up
+        if(i!=0 && graph[i][j]<=graph[i-1][j]) dfs(graph, visited, i-1, j);
         
+        //Moving Down
+        if(i!=graph.size()-1 && graph[i][j]<=graph[i+1][j]) dfs(graph, visited, i+1, j);
+        
+        //Moving right
+        if(j!=graph[0].size()-1 && graph[i][j]<=graph[i][j+1]) dfs(graph, visited, i, j+1);
+        
+        //Moving left
+        if(j!=0 && graph[i][j]<=graph[i][j-1]) dfs(graph, visited, i, j-1);
+        
+        return;
     }
     
     vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
-        int m=heights.size(),n=heights[0].size();
-        vector<vector<int>> pacific(m, vector<int>(n, 0));
-        vector<vector<int>> atlantic(m, vector<int>(n, 0));
+        int m= heights.size(), n=heights[0].size();
+        vector<vector<bool>> pacific_vis(m, vector<bool>(n, false)), atlantic_vis(m, vector<bool>(n, false));
         
-        for(int col=0;col<n;col++) {
-            if(pacific[0][col]==0) {dfs(heights, pacific, 0, col);}
-            if(atlantic[m-1][col]==0) {dfs(heights, atlantic,m-1, col);}
+        for(int i=0;i<n;i++) {
+            dfs(heights, pacific_vis, 0, i);
+            dfs(heights, atlantic_vis, m-1, i);
         }
         
-        for(int row=0;row<m;row++) {
-            if(pacific[row][0]==0) {dfs(heights, pacific, row, 0);}
-            if(atlantic[row][n-1]==0) {dfs(heights, atlantic, row, n-1);}
+        for(int i=0;i<m;i++) {
+            dfs(heights, pacific_vis, i, 0);
+            dfs(heights, atlantic_vis, i, n-1);
         }
         
         vector<vector<int>> res;
-        
         for(int i=0;i<m;i++) {
             for(int j=0;j<n;j++) {
-                if(pacific[i][j]==-1 && atlantic[i][j]==-1) res.push_back({i, j});
+                if(pacific_vis[i][j] && atlantic_vis[i][j]) res.push_back({i, j});
             }
         }
         
