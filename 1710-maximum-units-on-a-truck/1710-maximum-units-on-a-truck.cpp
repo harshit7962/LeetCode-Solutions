@@ -1,20 +1,25 @@
 class Solution {
 public:
+    static bool myCmp(vector<int> &v1,  vector<int> &v2) {
+        return v1[1]>v2[1];
+    }
+    
     int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
-        map<int, int, greater<int>> mp;
+        sort(boxTypes.begin(), boxTypes.end(), myCmp);
         
-        for(int i=0;i<boxTypes.size();i++) mp[boxTypes[i][1]]+=boxTypes[i][0];
+        int i=0, res=0;
         
-        int res=0;
-        for(auto i:mp) {
-            if(i.second < truckSize) {
-                res+=(i.first*i.second);
-                truckSize-=i.second;
-            } else if(i.second >= truckSize) {
-                res+=(truckSize*i.first);
-                return res;
+        while(i<boxTypes.size() && truckSize>0) {
+            if(truckSize>boxTypes[i][0]) {
+                res+=boxTypes[i][0]*boxTypes[i][1];
+                truckSize-=boxTypes[i][0];
+            } else {
+                res+=truckSize*boxTypes[i][1];
+                break;
             }
+            i++;
         }
-        return res;
+        
+        return res;     
     }
 };
