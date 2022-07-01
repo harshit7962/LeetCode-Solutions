@@ -1,31 +1,32 @@
 class NumMatrix {
 public:
-    vector<vector<int>> mat;
+    vector<vector<int>> prefixSum;
     NumMatrix(vector<vector<int>>& matrix) {
-        //Presum of each row...
-        for(int i=0;i<matrix.size();i++) {
-            for(int j=1;j<matrix[0].size();j++) {
-                matrix[i][j]+=matrix[i][j-1];
+        int rows = matrix.size(), cols = matrix[0].size();
+        
+        for(int i=0;i<cols;i++){
+            for(int j=1;j<rows;j++) {
+                matrix[j][i] += matrix[j-1][i]; 
             }
         }
         
-        //Presum of each col...
-        for(int i=1;i<matrix.size();i++) {
-            for(int j=0;j<matrix[0].size();j++) {
-                matrix[i][j]+=matrix[i-1][j];
+        for(int i=0;i<rows;i++) {
+            for(int j=1;j<cols;j++) {
+                matrix[i][j] += matrix[i][j-1];
             }
         }
         
-        
-        mat = matrix;
+        prefixSum = matrix;
     }
     
     int sumRegion(int row1, int col1, int row2, int col2) {
-        int sum = mat[row2][col2];
+        int wholeSum = prefixSum[row2][col2];
+        int sub1=0, sub2=0, add1=0;
+        if(row1!=0) sub1=prefixSum[row1-1][col2];
+        if(col1!=0) sub2=prefixSum[row2][col1-1];
+        if(row1!=0 && col1!=0) add1 = prefixSum[row1-1][col1-1];
         
-        int extra = ((row1==0)?0:mat[row1-1][col2]) + ((col1==0)?0:mat[row2][col1-1]) - ((row1!=0 && col1!=0)?mat[row1-1][col1-1]:0);
-
-        return sum-extra;
+        return wholeSum-sub1-sub2+add1;
     }
 };
 
