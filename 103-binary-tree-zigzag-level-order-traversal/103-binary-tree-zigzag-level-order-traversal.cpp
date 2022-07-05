@@ -14,38 +14,41 @@ public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
         if(root == NULL) return {};
         
-        stack<TreeNode *> s1, s2;
-        s1.push(root);
-        
         vector<vector<int>> res;
         
-        while(!s1.empty() || !s2.empty()) {
-            vector<int> temp1, temp2;
-            if(!s1.empty()) {
-                while(!s1.empty()) {
-                    TreeNode *curr = s1.top();
-                    s1.pop();
-                    if(curr->left!=NULL) s2.push(curr->left);
-                    if(curr->right!=NULL) s2.push(curr->right);
-                    
-                    temp1.push_back(curr->val);
+        queue<TreeNode *> q;
+        q.push(root);
+        
+        bool lToR = true;
+        
+        while(!q.empty()) {
+            stack<TreeNode *> st;
+            int c = q.size();
+            vector<int> curr;
+            for(int i=0;i<c;i++) {
+                TreeNode *temp = q.front();
+                q.pop();
+                
+                curr.push_back(temp->val);
+                
+                if(lToR) {
+                    if(temp->left!=NULL) st.push(temp->left);
+                    if(temp->right!=NULL)st.push(temp->right);
+                } else {
+                    if(temp->right!=NULL)st.push(temp->right);
+                    if(temp->left!=NULL) st.push(temp->left);
                 }
-                res.push_back(temp1);
             }
             
-            if(!s2.empty()) {
-                while(!s2.empty()) {
-                    TreeNode *curr = s2.top();
-                    s2.pop();
-                    if(curr->right!=NULL) s1.push(curr->right);
-                    if(curr->left!=NULL) s1.push(curr->left);
-                    
-                    temp2.push_back(curr->val);
-                }
-                res.push_back(temp2);
+            lToR = !lToR;
+            
+            while(!st.empty()) {
+                q.push(st.top());
+                st.pop();
             }
+            
+            res.push_back(curr);
         }
-        
         
         return res;
     }
