@@ -21,6 +21,10 @@ public:
         //Right check
         if(dfs(board, visited, word, ind+1, row, col+1)) return true;
         
+        /**
+        If this current node is not part of our answer, we need to mark it unvisited...
+        This is to make sure that this node can be used again for
+        */
         visited[row][col] =false;
         
         return false;
