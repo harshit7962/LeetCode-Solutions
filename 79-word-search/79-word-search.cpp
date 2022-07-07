@@ -23,7 +23,9 @@ public:
         
         /**
         If this current node is not part of our answer, we need to mark it unvisited...
-        This is to make sure that this node can be used again for
+        This is to make sure that this node can be used again for some cases...
+        for example.. if string is SEEED and in some path SEE wont give us our disred result,
+        the we need to mark both the sending EE's as unvisited...
         */
         visited[row][col] =false;
         
