@@ -1,28 +1,32 @@
 class Solution {
 public:
-    bool touchBorder(vector<vector<int>> &grid, int i, int j) {
-        if(grid[i][j]==1) return true;
-        if(i<=0 || j<=0 || i>=grid.size()-1 || j>=grid[0].size()-1) return false;
-
-        grid[i][j] = 1;
-        bool flag1 = touchBorder(grid, i+1, j);
-        bool flag2 = touchBorder(grid, i, j+1);
-        bool flag3 = touchBorder(grid, i-1, j);
-        bool flag4 = touchBorder(grid, i, j-1);
+    
+    bool dfs(vector<vector<int>> &grid, int row, int col) {
+        if(grid[row][col] == 1) return true;
+        if(row==0 || col==0 || row==grid.size()-1 || col==grid[0].size()-1) return false;
         
-        return flag1 && flag2 && flag3 && flag4;
+        grid[row][col]=1;
+        
+        bool flag1 = dfs(grid, row-1, col);
+        bool flag2 = dfs(grid, row+1, col);
+        bool flag3 = dfs(grid, row, col-1);
+        bool flag4 = dfs(grid, row, col+1);
+        
+        return (flag1 && flag2 && flag3 && flag4);
     }
     
     int closedIsland(vector<vector<int>>& grid) {
-        int m=grid.size(),n=grid[0].size(), res=0;
-        for(int i=0;i<m;i++) {
-            for(int j=0;j<n;j++) {
+        int res=0;
+        
+        for(int i=0;i<grid.size();i++) {
+            for(int j=0;j<grid[0].size();j++) {
                 if(grid[i][j]==0) {
-                    if(touchBorder(grid, i, j)) res++;
-                    // cout << i << " " << j << " " << res << endl;
+                    bool f = dfs(grid, i, j);
+                    if(f) res++;
                 }
             }
         }
+        
         
         return res;
     }
