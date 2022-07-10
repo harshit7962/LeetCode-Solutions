@@ -11,16 +11,22 @@
  */
 class Solution {
 public:
-    vector<int> res;
-    void inorder(TreeNode *root) {
-        if(root==NULL) return;
-        inorder(root->left);
-        res.push_back(root->val);
-        inorder(root->right);
-    }
-    
     int kthSmallest(TreeNode* root, int k) {
-        inorder(root);
-        return res[k-1];
+        stack<TreeNode *> st;
+        st.push(root);
+        
+        while(true) {
+            if(st.top()!=NULL) {
+                st.push(st.top()->left);
+            } else {
+                st.pop();
+                if(--k==0) return st.top()->val;
+                TreeNode *curr = st.top();
+                st.pop();
+                st.push(curr->right);                
+            }
+        }
+        
+        return root->val;
     }
 };
