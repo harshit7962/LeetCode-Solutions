@@ -1,61 +1,55 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int m=grid.size(), n=grid[0].size();
         queue<pair<pair<int, int>, int>> q;
+        int count_fresh = 0;
         
-        int num_fresh = 0;
-        
-        for(int i=0;i<m;i++) {
-            for(int j=0;j<n;j++) {
-                if(grid[i][j]==2) {
-                    q.push({{i,j},0});
-                } else if(grid[i][j] == 1) num_fresh++;
-                
+        for(int i=0;i<grid.size();i++) {
+            for(int j=0;j<grid[0].size();j++) {
+                if(grid[i][j] == 1) count_fresh++;
+                if(grid[i][j] == 2) q.push({{i, j}, 0});
             }
         }
         
-        int res=0;
+        int curr_time=0;
+        
         while(!q.empty()) {
-            int curr_row = q.front().first.first;
-            int curr_col = q.front().first.second;
-            int curr_tim = q.front().second;
-            
-            res = curr_tim;
+            int row = q.front().first.first;
+            int col = q.front().first.second;
+            curr_time = q.front().second;
             
             q.pop();
             
-            
-            //Travelling UP
-            if(curr_row!=0 && grid[curr_row-1][curr_col]==1) {
-                num_fresh--;
-                q.push({{curr_row-1, curr_col}, curr_tim+1});
-                grid[curr_row-1][curr_col] = 2;
+            //Moving up
+            if(row!=0 && grid[row-1][col]==1) {
+                count_fresh--;
+                grid[row-1][col] = 2;
+                q.push({{row-1, col}, curr_time+1});
             }
             
-            //Travelling DOWN
-            if(curr_row!=m-1 && grid[curr_row+1][curr_col]==1) {
-                num_fresh--;
-                q.push({{curr_row+1, curr_col}, curr_tim+1});
-                grid[curr_row+1][curr_col] = 2;
+            //Moving Down
+            if(row!=grid.size()-1 && grid[row+1][col]==1) {
+                count_fresh--;
+                grid[row+1][col] = 2;
+                q.push({{row+1, col}, curr_time+1});
             }
             
-            //Travelling LEFT
-            if(curr_col!=0 && grid[curr_row][curr_col-1]==1) {
-                num_fresh--;
-                q.push({{curr_row, curr_col-1}, curr_tim+1});
-                grid[curr_row][curr_col-1] = 2;
+            //Moving Left
+            if(col!=0 && grid[row][col-1]==1) {
+                count_fresh--;
+                grid[row][col-1] = 2;
+                q.push({{row, col-1}, curr_time+1});
             }
             
-            //Travelling RIGHT
-            if(curr_col!=n-1 && grid[curr_row][curr_col+1]==1) {
-                num_fresh--;
-                q.push({{curr_row, curr_col+1}, curr_tim+1});
-                grid[curr_row][curr_col+1] = 2;
+            //Moving Right
+            if(col!=grid[0].size()-1 && grid[row][col+1]==1) {
+                count_fresh--;
+                grid[row][col+1] = 2;
+                q.push({{row, col+1}, curr_time+1});
             }
-            
         }
         
-        return (num_fresh==0)?res:-1;
+        if(count_fresh!=0) return -1;
+        return curr_time;
     }
 };
