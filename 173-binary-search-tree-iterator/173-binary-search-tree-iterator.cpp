@@ -9,29 +9,32 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
 class BSTIterator {
+private:
+    stack<TreeNode*> st;
 public:
-    vector<int> inorder;
-    int curr;
     BSTIterator(TreeNode* root) {
-        curr = -1;
-        convert(root);
-    }
-    
-    void convert(TreeNode* root) {
-        if(root==NULL) return;
-        convert(root->left);
-        inorder.push_back(root->val);
-        convert(root->right);
+        while(root != NULL) {
+            st.push(root);
+            root = root->left;
+        }
     }
     
     int next() {
-        curr++;
-        return inorder[curr];
+        TreeNode *temp = st.top();
+        st.pop();
+        
+        if(temp->right!=NULL) {
+            st.push(temp->right);
+            while(st.top()->left!=NULL) st.push(st.top()->left);
+        }
+        
+        return temp->val;
     }
     
     bool hasNext() {
-        return (curr+1 < inorder.size());
+        return (st.size()!=0);
     }
 };
 
