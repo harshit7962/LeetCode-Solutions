@@ -1,48 +1,54 @@
 class Solution {
 public:
-    int simulBFS(queue<pair<int,int>> &q, vector<vector<int>> &grid) {
-        int count=-1;
-        while(!q.empty()) {
-            int c = q.size();
-            count++;
-            for(int i=0;i<c;i++) {
-                pair<int, int> p = q.front();
-                q.pop();
-                
-                if(p.first-1>=0 && grid[p.first-1][p.second]==0) {
-                    q.push({p.first-1, p.second});
-                    grid[p.first-1][p.second]=1;
-                }
-                if(p.first+1<grid.size() && grid[p.first+1][p.second]==0) {
-                    q.push({p.first+1, p.second});
-                    grid[p.first+1][p.second]=1;
-                }
-                if(p.second-1>=0 && grid[p.first][p.second-1]==0) {
-                    q.push({p.first, p.second-1});
-                    grid[p.first][p.second-1]=1;
-                }
-                if(p.second+1<grid.size() && grid[p.first][p.second+1]==0) {
-                    q.push({p.first, p.second+1});
-                    grid[p.first][p.second+1]=1;
-                }
-            }
-        }
-        
-        return count;
-    }
-    
     int maxDistance(vector<vector<int>>& grid) {
-        queue<pair<int, int>> q;
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++) {
+        queue<pair<pair<int, int>, int>> q;
+        
+        for(int i=0;i<grid.size();i++) {
+            for(int j=0;j<grid.size();j++) {
                 if(grid[i][j]==1) {
-                    q.push({i, j});
+                    q.push({{i, j}, 0});
                 }
             }
         }
         
-        int res = simulBFS(q, grid);
+        int res = -1;
         
-        return res==0?-1:res;
+        while(!q.empty()) {
+            int row = q.front().first.first;
+            int col = q.front().first.second;
+            int dis = q.front().second;
+            
+            q.pop();
+            
+            //Moving up
+            if(row!=0 && grid[row-1][col]==0) {
+                grid[row-1][col] = 1;
+                res = dis+1;
+                q.push({{row-1, col}, dis+1});
+            }
+            
+            //Moving Down
+            if(row!=grid.size()-1 && grid[row+1][col]==0) {
+                grid[row+1][col] = 1;
+                res = dis+1;
+                q.push({{row+1, col}, dis+1});
+            }
+            
+            //Moving Left
+            if(col!=0 && grid[row][col-1]==0) {
+                grid[row][col-1] = 1;
+                res = dis+1;
+                q.push({{row, col-1}, dis+1});
+            }
+            
+            //Moving Right
+            if(col!=grid.size()-1 && grid[row][col+1]==0) {
+                grid[row][col+1] = 1;
+                res = dis+1;
+                q.push({{row, col+1}, dis+1});
+            }
+        }
+                
+        return res;
     }
 };
