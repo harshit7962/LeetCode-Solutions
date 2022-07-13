@@ -1,30 +1,43 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char, int> tmap, smap;
-        for(char c:t) tmap[c]++;
+        if(s.size()<t.size()) return "";
+        unordered_map<char, int> mp;
         
-        int i=0, j=0, matchcount=0;
-        string res="";
-        while(j<s.size()) {
-            //Acquire
-            while(j<s.size() && matchcount!=t.size()) {
-                smap[s[j]]++;
-                if(smap[s[j]]<=tmap[s[j]]) matchcount++;
-                j++;
+        for(char c: t) mp[c]++;
+        
+        int num_char = mp.size();
+        
+        int acquire = 0, release = 0;
+        
+        string res = "";
+        
+        while(acquire<s.size()) {
+            if(mp.find(s[acquire])!=mp.end()) {
+                mp[s[acquire]]--;
+                if(mp[s[acquire]] == 0) num_char--;
             }
             
-            //Release
-            while(matchcount==t.size()) {
-                smap[s[i]]--;
-                if(smap[s[i]]<tmap[s[i]]) matchcount--;
+            while(num_char == 0) {
+                if(res=="" || res.size()>acquire-release+1) {
+                    res = s.substr(release, acquire-release+1);
+                }
                 
-                string curr = s.substr(i, j-i);
-                i++;
-                if(res=="" || res.size()>curr.size()) res=curr;
+                if(mp.find(s[release])!=mp.end()) {
+                    mp[s[release]]++;
+                    if(mp[s[release]] == 1) num_char++;
+                }
+                release++;
             }
+
+            acquire++;
         }
         
+        if(num_char==0) {
+            if(res=="" || res.size()>acquire-release+1) {
+                res = s.substr(release, acquire-release+1);
+            }
+        }
         return res;
     }
 };
