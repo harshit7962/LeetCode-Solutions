@@ -5,7 +5,7 @@ public:
         
         for(int i:nums) {
             if(i==0) {
-                zero_count++;
+                ++zero_count;
             } else {
                 prod*=i;
             }
@@ -15,12 +15,12 @@ public:
         
         if(zero_count == 1) {
             vector<int> res(nums.size(), 0);
-            for(int i=0;i<nums.size();i++) {
+            for(int i=0;i<nums.size();++i) {
                 if(nums[i]==0) {res[i] = prod; return res;}
             }
         }
         vector<int> res(nums.size());
-        for(int i=0;i<nums.size();i++) {
+        for(int i=0;i<nums.size();++i) {
             res[i] = prod/nums[i];
         }
         
