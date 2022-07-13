@@ -1,54 +1,28 @@
 class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        if(grid[0][0]==1) return -1;
-        int count=0;
-        queue<pair<int,int>> q;
-        q.push({0,0});
         int n = grid.size();
-
-        vector<vector<bool>> visited(n, vector<bool>(n, false));
+        if(grid[0][0] == 1) return -1;
+        
+        queue<pair<pair<int, int>, int>> q;
+        q.push({{0,0}, 1});
+        
+        vector<int> directx = {-1,1,0,0,-1,-1,1,1}, directy = {0,0,-1,1,-1,1,-1,1};
         
         while(!q.empty()) {
-            count++;
-            int c = q.size();
-            for(int x=0;x<c;x++) {
-                int i = q.front().first;
-                int j = q.front().second;
-                if(i==n-1 && j==n-1) return count;
-                q.pop();
-                
-                if(i!=0 && grid[i-1][j]==0 && !visited[i-1][j]) {
-                    visited[i-1][j]= true;
-                    q.push({i-1, j});
-                }
-                if(i!=n-1 && grid[i+1][j]==0 && !visited[i+1][j] ) {
-                    visited[i+1][j]= true;
-                    q.push({i+1, j});
-                }
-                if(j!=0 && grid[i][j-1]==0 && !visited[i][j-1]) {
-                    visited[i][j-1]= true;
-                    q.push({i, j-1});
-                }
-                if(j!=n-1 && grid[i][j+1]==0 && !visited[i][j+1]) {
-                    visited[i][j+1]= true;
-                    q.push({i, j+1});
-                }
-                if(i!=0 && j!=0 && grid[i-1][j-1]==0 && !visited[i-1][j-1]) {
-                    visited[i-1][j-1]= true;
-                    q.push({i-1, j-1});
-                }
-                if(i!=n-1 && j!=0 && grid[i+1][j-1]==0 && !visited[i+1][j-1]) {
-                    visited[i+1][j-1]= true;
-                    q.push({i+1, j-1});
-                }
-                if(j!=n-1 && i!=0 && grid[i-1][j+1]==0 && !visited[i-1][j+1]) {
-                    visited[i-1][j+1]= true;
-                    q.push({i-1, j+1});
-                }
-                if(i!=n-1 && j!=n-1 && grid[i+1][j+1]==0 && !visited[i+1][j+1]) {
-                    visited[i+1][j+1]= true;
-                    q.push({i+1, j+1});
+            int row = q.front().first.first;
+            int col = q.front().first.second;
+            int dis = q.front().second;
+            
+            q.pop();
+            
+            if(row == n-1 && col == n-1) return dis;
+            
+            for(int i=0;i<8;i++) {
+                int newrow = row+directx[i], newcol = col+directy[i];
+                if(newrow>=0 && newcol>=0 && newrow<n && newcol<n && grid[newrow][newcol]!=1) {
+                    grid[newrow][newcol] = 1;
+                    q.push({{newrow, newcol}, dis+1});
                 }
             }
         }
