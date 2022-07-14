@@ -1,41 +1,45 @@
 class Solution {
 public:
     string decodeString(string s) {
+        string curr = "", res = "";
         stack<int> numbers;
         stack<string> result;
-        string res="";
         
-        int index=0;
-        while(index<s.size()) {
-            if(s[index]>='0' && s[index]<='9') {
-                int num = 0;
-                while(s[index]>='0' && s[index]<='9') {
-                    num = num*10+(s[index]-'0');
-                    index++;
+        int i=0;
+        
+        while(i<s.size()) {
+            if(s[i]>='0' && s[i]<='9') {
+                int num = s[i++]-'0';
+                while(s[i]>='0' && s[i]<='9') {
+                    num=num*10 + (s[i]-'0');
+                    i++;
                 }
                 numbers.push(num);
-            } else if(s[index]=='[') {
-                result.push(res);
-                res="";
-                index++;
-            } else if(s[index]==']') {
-                string temp = result.top();
-                result.pop();
+            } else if(s[i]=='[') {
+                result.push(curr);
+                curr = "";
+                i++;
+            } else if(s[i]==']') {
                 int num = numbers.top();
                 numbers.pop();
+                string temp = curr;
                 
-                while(num>0) {
+                while(num>1) {
+                    temp += curr;
                     num--;
-                    temp+=res;
                 }
-                res = temp;
-                index++;               
+                
+                temp = result.top()+temp;
+                result.pop();
+                
+                curr = temp;
+                i++;                
             } else {
-                res+=s[index];
-                index++;
+                curr+=s[i];
+                i++;
             }
         }
         
-        return res;
+        return curr;        
     }
 };
