@@ -10,27 +10,32 @@
  * };
  */
 class Solution {
-private:
-    int preIndex=0;
-    
 public:
-    TreeNode *cTree(vector<int> preorder, vector<int> inorder, int is, int ie) {
-        if(is>ie) return NULL;
+    int pre_ind = 0;
+    
+    TreeNode *tree(vector<int>&preorder, vector<int>&inorder, int start, int end) {
+        if(start>end) return NULL;
         
-        TreeNode *root = new TreeNode(preorder[preIndex++]);
+        TreeNode *root = new TreeNode(preorder[pre_ind]);
         
-        int ind;
-        for(int i=is;i<=ie;i++) {
-            if(inorder[i]==root->val) {ind=i;break;}
+        int ino_ind = start;
+        
+        for(int i=start;i<=end;i++) {
+            if(inorder[i] == preorder[pre_ind]) {
+                ino_ind = i;
+                break;
+            }
         }
         
-        root->left = cTree(preorder, inorder, is, ind-1);
-        root->right = cTree(preorder, inorder, ind+1, ie);
+        pre_ind++;
         
-        return root;
+        root->left = tree(preorder, inorder, start, ino_ind-1);
+        root->right= tree(preorder, inorder, ino_ind+1, end);
+        
+        return root;        
     }
     
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        return cTree(preorder, inorder, 0, inorder.size()-1);
+        return tree(preorder, inorder, 0, inorder.size()-1);
     }
 };
