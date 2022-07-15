@@ -1,36 +1,34 @@
 class Solution {
 public:
-    int count=0;
-    
-    bool contains(int x, vector<int> &v) {
-        for(int i=0;i<v.size();i++) if(v[i]==x) return true;
-        return false;
-    }
-    
-    void dfs(vector<int> directed[], vector<int> undirected[], vector<bool> &visited, int src) {
+    void dfs(vector<int> dir[], vector<int> und[], int &count, int src, vector<bool>&visited) {
         visited[src] = true;
-        
-        for(int y:undirected[src]) {
+        for(int y:und[src]) {
             if(!visited[y]) {
-                if(contains(y, directed[src])) {count++;}
-                dfs(directed, undirected, visited, y);
+                bool isP = false;
+                for(int i:dir[src]) {
+                    if(i==y) {isP = true; break;}
+                }
+                
+                if(isP) {count++;}
+                dfs(dir, und, count, y, visited);
             }
         }
     }
     
     int minReorder(int n, vector<vector<int>>& connections) {
+        int count = 0;
+        
         vector<int> undirected[n], directed[n];
         
-        for(int i=0;i<n-1;i++) {
-            undirected[connections[i][0]].push_back(connections[i][1]);
-            undirected[connections[i][1]].push_back(connections[i][0]);
+        for(auto v: connections) {
+            directed[v[0]].push_back(v[1]);
             
-            directed[connections[i][0]].push_back(connections[i][1]);
+            undirected[v[0]].push_back(v[1]);
+            undirected[v[1]].push_back(v[0]);
         }
         
         vector<bool> visited(n, false);
-        
-        dfs(directed, undirected, visited, 0);
+        dfs(directed, undirected, count, 0, visited);
         
         return count;
     }
