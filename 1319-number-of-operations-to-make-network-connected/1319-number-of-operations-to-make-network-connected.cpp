@@ -1,39 +1,33 @@
 class Solution {
 public:
-    
-    void dfs(vector<int> adj[], vector<bool> &visited, int s) {
-        visited[s]=true;
+    void dfs(vector<int> adj[], int src, vector<bool> &vis) {
+        if(vis[src]) return;
+        vis[src] = true;
         
-        for(auto x:adj[s]) {
-            if(!visited[x]) {
-                dfs(adj, visited, x);
-            }
+        for(int y:adj[src]) {
+            dfs(adj, y, vis);
         }
     }
     
-    int connectedCompo(vector<vector<int>> &connections, int n) {
-        vector<bool> visited(n, false);
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        if(connections.size()<n-1) return -1;
         vector<int> adj[n];
+        
         for(auto v: connections) {
             adj[v[0]].push_back(v[1]);
             adj[v[1]].push_back(v[0]);
         }
         
-        int count=0;
+        vector<bool> visited(n, false);
+        int count = 0;
+        
         for(int i=0;i<n;i++) {
             if(!visited[i]) {
                 count++;
-                dfs(adj, visited, i);
+                dfs(adj, i, visited);
             }
         }
         
-        return count;
-    }
-    
-    int makeConnected(int n, vector<vector<int>>& connections) {
-        int num_wires = connections.size();
-        if(num_wires<n-1) return -1;
-        
-        return connectedCompo(connections, n)-1;
+        return count-1;
     }
 };
