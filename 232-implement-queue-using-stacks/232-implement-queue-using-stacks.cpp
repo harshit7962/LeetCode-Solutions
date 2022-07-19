@@ -2,6 +2,7 @@ class MyQueue {
 private:
     stack<int> s1, s2;
     int front;
+    
 public:
     MyQueue() {
         
@@ -13,18 +14,21 @@ public:
     }
     
     int pop() {
-        while(!s1.empty()) {
+        while(!s1.empty()){
             s2.push(s1.top());
             s1.pop();
         }
-        int val = s2.top();
+        
+        int x = s2.top();
         s2.pop();
         if(!s2.empty()) front = s2.top();
+        
         while(!s2.empty()) {
             s1.push(s2.top());
             s2.pop();
         }
-        return val;
+        
+        return x;
     }
     
     int peek() {
