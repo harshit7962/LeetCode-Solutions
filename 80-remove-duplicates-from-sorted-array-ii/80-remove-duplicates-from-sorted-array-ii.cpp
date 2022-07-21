@@ -7,11 +7,9 @@ public:
             if(nums[i]!=nums[curr]) {
                 curr++;
                 nums[curr] = nums[i];
-            } else if(nums[i]==nums[curr]) {
-                if(curr==0 || nums[curr-1]!=nums[curr]) {
-                    curr++;
-                    nums[curr] = nums[i];
-                }
+            } else if(nums[i]==nums[curr] && (curr==0 || nums[curr-1]!=nums[curr])) {
+                curr++;
+                nums[curr] = nums[i];
             }
         }
         
