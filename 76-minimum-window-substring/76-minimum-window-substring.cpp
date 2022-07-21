@@ -38,6 +38,7 @@ public:
                 res = s.substr(release, acquire-release+1);
             }
         }
+        
         return res;
     }
 };
