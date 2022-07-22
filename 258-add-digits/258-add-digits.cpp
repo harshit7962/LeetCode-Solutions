@@ -1,20 +1,8 @@
 class Solution {
-public:
-    int sumDigits(int num) {
-        int res = 0;
-        while(num>0) {
-            res += num%10;
-            num /= 10;
-        }
-        
-        return res;
-    }
-    
+public:    
     int addDigits(int num) {
-        while(num>9) {
-            num = sumDigits(num);
-        }
-        
-        return num;
+        if(num == 0) return 0;
+        if(num%9 == 0) return 9;
+        return num%9;
     }
 };
